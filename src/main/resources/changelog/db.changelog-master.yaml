@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: aperminov
+      changes:
+        - sqlFile:
+            path: changes/V001_create-budget-table.sql
+            relativeToChangelogFile: true

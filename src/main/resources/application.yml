@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:45533/dev_mem
+    username: dev
+    password: dev
+    maxPoolSize: 5
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  output:
+    ansi:
+      enabled: ALWAYS
+  sql:
+    init:
+      mode: always
