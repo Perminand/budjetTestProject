@@ -1,26 +1,29 @@
 package ru.sevenwings.budget.dto;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
+import ru.sevenwings.budget.dto.type.BudgetType;
 
-import java.time.LocalDate;
+@Builder
+public record BudgetDto(
 
-public class BudgetDto {
-
-    private Long id;
+        Long id,
 
     @NotNull(message = "значение year не может быть null")
     @Positive(message = "значение year не может быть меньше или равно 0")
-    private LocalDate year;
+    Integer year,
 
     @NotNull(message = "значение mount не может быть null")
     @Positive(message = "значение mount не может быть меньше или равно 0")
-    private LocalDate mount;
+        @Max(value = 12, message = "значение mount не может быть больше 12")
+        Integer mount,
 
     @NotNull(message = "значение amount не может быть null")
     @Positive(message = "значение amount не может быть меньше или равно 0")
-    private int amount;
+        Integer amount,
 
     @NotNull(message = "значение budgetType не может быть null")
-    private BudgetType budgetType;
+        BudgetType budgetType) {
 }

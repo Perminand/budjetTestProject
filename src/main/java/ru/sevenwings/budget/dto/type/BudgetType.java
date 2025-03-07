@@ -1,4 +1,4 @@
-package ru.sevenwings.budget.dto;
+package ru.sevenwings.budget.dto.type;
 
 import lombok.Getter;
 

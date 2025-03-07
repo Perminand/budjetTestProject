@@ -6,3 +6,10 @@ databaseChangeLog:
         - sqlFile:
             path: changes/V001_create-budget-table.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 2
+      author: aperminov
+      changes:
+        - sqlFile:
+            path: changes/V002_create-author-table.sql
+            relativeToChangelogFile: true
