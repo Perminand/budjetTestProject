@@ -26,4 +26,6 @@ public record BudgetRecordDto(
 
         @NotBlank(message = "Описание бюджета не может быть пустым")
         String budgetType) {
+
+
 }

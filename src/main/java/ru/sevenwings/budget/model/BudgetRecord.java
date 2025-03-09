@@ -17,6 +17,8 @@ import lombok.Setter;
 import lombok.ToString;
 import ru.sevenwings.budget.dto.type.BudgetType;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -42,5 +44,7 @@ public class BudgetRecord {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Author author;
+
+    private LocalDateTime createRecord;
 
 }

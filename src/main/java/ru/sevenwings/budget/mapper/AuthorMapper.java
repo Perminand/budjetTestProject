@@ -10,8 +10,9 @@ import java.time.LocalDateTime;
 @Mapper(componentModel = "spring")
 public interface AuthorMapper {
 
+    @Mapping(target = "fio", source = "fio")
     @Mapping(target = "createData", source = "createData")
-    Author toEntity(AuthorDto authorDto, LocalDateTime createData);
+    Author toEntity(String fio, LocalDateTime createData);
 
     AuthorDto toDto(Author author);
 }

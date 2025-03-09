@@ -18,10 +18,9 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorMapper authorMapper;
 
     @Override
-    public AuthorDto createAuthor(AuthorDto authorDto) {
-        Author author = authorMapper.toEntity(authorDto, LocalDateTime.now());
+    public AuthorDto createAuthor(String fio) {
+        Author author = authorMapper.toEntity(fio, LocalDateTime.now());
         authorRepository.save(author);
-        authorDto = authorMapper.toDto(author);
-        return authorDto;
+        return authorMapper.toDto(author);
     }
 }

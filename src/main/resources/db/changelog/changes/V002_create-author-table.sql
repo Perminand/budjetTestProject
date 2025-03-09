@@ -11,17 +11,19 @@ CREATE TABLE temp_budget (
     year integer,
     amount integer,
     budget_type varchar(255),
-    author_id bigint
+    author_id bigint,
+    create_record timestamp(6)
 );
 
-INSERT INTO temp_budget (id, mount, year, amount, budget_type, author_id)
+INSERT INTO temp_budget (id, mount, year, amount, budget_type, author_id, create_record)
 SELECT
     b.id,
     b.mount,
     b.year,
     b.amount,
     b.budget_type,
-    NULL::bigint
+    NULL::bigint,
+    NULL::timestamp(6)
 FROM budget b;
 
 DROP TABLE budget;

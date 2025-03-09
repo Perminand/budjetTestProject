@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sevenwings.budget.dto.BudgetDtoOut;
 import ru.sevenwings.budget.dto.BudgetRecordDto;
+import ru.sevenwings.budget.dto.BudgetRecordDtoOut;
 import ru.sevenwings.budget.dto.request.BudgetParamForGetDto;
 import ru.sevenwings.budget.dto.type.BudgetType;
 import ru.sevenwings.budget.mapper.BudgetMapper;
@@ -18,6 +19,7 @@ import ru.sevenwings.budget.model.BudgetRecord;
 import ru.sevenwings.budget.repository.AuthorRepository;
 import ru.sevenwings.budget.repository.BudgetRepository;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,7 @@ public class BudgetServiceImpl implements BudgetService {
         BudgetRecord budgetRecord = budgetMapper.toEntity(budgetRecordDto, budgetType);
         if (authorId != null) {
             budgetRecord.setAuthor(authorRepository.findById(authorId).orElseThrow(() -> new EntityNotFoundException("author не найден id = " + authorId)));
+            budgetRecord.setCreateRecord(LocalDateTime.now());
         }
         budgetRecord = budgetRepository.save(budgetRecord);
         log.info("Создан budget {}", budgetRecord);
@@ -67,7 +70,7 @@ public class BudgetServiceImpl implements BudgetService {
                 totalByType.replace(description, totalByType.get(description) + br.getAmount());
             }
         }
-        List<BudgetRecordDto> budgetRecordDtos = budgetRecords.stream().map(budgetMapper::toDto).toList();
+        List<BudgetRecordDtoOut> budgetRecordDtos = budgetRecords.stream().map(budgetMapper::toDtoOut).toList();
         log.info("Вывод листа BudgetDto {}", budgetRecordDtos);
         return BudgetDtoOut.builder().total(total).totalByType(totalByType).items(budgetRecordDtos).build();
     }

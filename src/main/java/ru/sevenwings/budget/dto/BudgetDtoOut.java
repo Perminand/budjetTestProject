@@ -9,7 +9,7 @@ import java.util.Map;
 public record BudgetDtoOut(
         Integer total,
         Map<String, Integer> totalByType,
-        List<BudgetRecordDto> items
+        List<BudgetRecordDtoOut> items
 ) {
 
 }
