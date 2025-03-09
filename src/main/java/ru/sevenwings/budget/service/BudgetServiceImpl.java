@@ -57,7 +57,7 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     @Transactional(readOnly = true)
     public BudgetDtoOut getBudget(BudgetParamForGetDto build) {
-        Pageable pageable = PageRequest.of(build.offset(), build.limit(), Sort.by("mount"));
+        Pageable pageable = PageRequest.of(build.offset(), build.limit(), Sort.by("month"));
         List<BudgetRecord> budgetRecords;
         if (build.search() != null) {
             budgetRecords = budgetRepository.findAllByYearAndFio(build.year(), build.search().toLowerCase(), pageable);

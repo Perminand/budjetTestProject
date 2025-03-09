@@ -15,9 +15,6 @@ public interface BudgetMapper {
     BudgetRecord toEntity(BudgetRecordDto budgetRecordDto, BudgetType budgetType);
 
     @Mapping(target = "budgetType", source = "budgetRecord.budgetType.description")
-    BudgetRecordDto toDto(BudgetRecord budgetRecord);
-
-    @Mapping(target = "budgetType", source = "budgetRecord.budgetType.description")
     @Mapping(target = "fio", source = "budgetRecord.author.fio")
     @Mapping(target = "createRecord", source = "createRecord")
     BudgetRecordDtoOut toDtoOut(BudgetRecord budgetRecord);

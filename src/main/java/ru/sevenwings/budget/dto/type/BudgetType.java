@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum BudgetType {
-    credit("Расход"),
-    debit("Приход");
+    CREDIT("Расход"),
+    DEBIT("Приход");
 
     private final String description;
 

@@ -11,7 +11,7 @@ public record BudgetRecordDtoOut(
 
         Integer year,
 
-        Integer mount,
+        Integer month,
 
         Integer amount,
 
@@ -20,6 +20,5 @@ public record BudgetRecordDtoOut(
         String fio,
 
         LocalDateTime createRecord) {
-
 
 }

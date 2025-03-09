@@ -34,7 +34,7 @@ public class BudgetRecord {
 
     private Integer year;
 
-    private Integer mount;
+    private Integer month;
 
     private Integer amount;
 
