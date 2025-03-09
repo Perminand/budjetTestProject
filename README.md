@@ -2,35 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Система учета бюджета</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        h1, h2, h3 {
-            color: #333;
-        }
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        .section {
-            margin-top: 30px;
-        }
-        .code-block {
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            padding: 15px;
-            white-space: pre-wrap;
-        }
-    </style>
-</head>
+    </head>
 <body>
     <h1>Система учета бюджета</h1>    
     <div class="section">
