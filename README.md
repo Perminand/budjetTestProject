@@ -132,5 +132,54 @@
             <li><strong>JUnit</strong>: Тестовый фреймворк для юнит-тестирования.</li>
         </ul>
     </div>
+
+<h1>Развертывание проекта на сервере</h1>
+    <div class="section">
+        <h2>Предварительные требования</h2>
+        <p>Перед началом убедитесь, что у вас установлены:</p>
+        <ul>
+            <li><strong>Docker</strong>: Последняя версия Docker доступна для скачивания на официальном сайте: <a href="https://docs.docker.com/get-docker/" target="_blank">Docker</a>.</li>
+            <li><strong>Docker Compose</strong>: Обычно устанавливается вместе с Docker, но также можно установить вручную: <a href="https://docs.docker.com/compose/install/" target="_blank">Docker Compose</a>.</li>
+        </ul>
+    </div>    
+    <div class="section">
+        <h2>Шаги развертывания</h2>
+        <ol>
+            <li>
+                <h3>Клонирование репозитория</h3>
+                <p>Клонируйте репозиторий проекта на свой сервер:</p>
+                <pre class="code-block">
+git clone https://github.com/Perminand/budjetTestProject.git
+cd bujetTestProject
+</pre>
+</li>
+<li>
+<h3>Сборка проекта</h3>
+<p>Используйте Maven для сборки проекта:</p>
+<pre class="code-block">
+mvn clean install
+</pre>
+</li>
+<li>
+<h3>Запуск проекта с помощью Docker Compose</h3>
+<p>Уже существующий файл <code>docker-compose.yml</code> содержит все необходимые настройки для запуска проекта. Просто выполните команду:</p>
+<pre class="code-block">
+docker-compose up -d
+</pre>
+</li>
+<li>
+<h3>Проверка работоспособности</h3>
+<p>Проверьте доступность приложения, открыв браузер и перейдя по адресу <code>http://localhost:8080</code> (или замените <code>localhost</code> на IP-адрес сервера).</p>
+</li>
+<li>
+<h3>Остановка и удаление контейнеров</h3>
+<p>Чтобы остановить и удалить запущенные контейнеры, выполните:</p>
+<pre class="code-block">
+docker-compose down
+</pre>
+</li>
+</ol>
+</div>
+
 </body>
 </html>
