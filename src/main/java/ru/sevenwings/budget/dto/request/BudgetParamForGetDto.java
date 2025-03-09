@@ -6,7 +6,8 @@ import lombok.Builder;
 public record BudgetParamForGetDto(
         Integer year,
         Integer limit,
-        Integer offset
+        Integer offset,
+        String search
 
 ) {
 }

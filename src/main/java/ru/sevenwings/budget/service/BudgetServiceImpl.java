@@ -37,7 +37,7 @@ public class BudgetServiceImpl implements BudgetService {
     private final BudgetMapper budgetMapper;
 
     @Override
-    public BudgetRecordDto create(BudgetRecordDto budgetRecordDto, Long authorId) {
+    public BudgetRecordDtoOut create(BudgetRecordDto budgetRecordDto, Long authorId) {
         BudgetType budgetType = BudgetType.fromDescription(budgetRecordDto.budgetType());
 
         if (budgetType == null) {
@@ -51,14 +51,19 @@ public class BudgetServiceImpl implements BudgetService {
         }
         budgetRecord = budgetRepository.save(budgetRecord);
         log.info("Создан budget {}", budgetRecord);
-        return budgetMapper.toDto(budgetRecord);
+        return budgetMapper.toDtoOut(budgetRecord);
     }
 
     @Override
     @Transactional(readOnly = true)
     public BudgetDtoOut getBudget(BudgetParamForGetDto build) {
         Pageable pageable = PageRequest.of(build.offset(), build.limit(), Sort.by("mount"));
-        List<BudgetRecord> budgetRecords = budgetRepository.findAllByYear(build.year(), pageable);
+        List<BudgetRecord> budgetRecords;
+        if (build.search() != null) {
+            budgetRecords = budgetRepository.findAllByYearAndFio(build.year(), build.search().toLowerCase(), pageable);
+        } else {
+            budgetRecords = budgetRepository.findAllByYear(build.year(), pageable);
+        }
         int total = 0;
         Map<String, Integer> totalByType = new HashMap<>();
         for (BudgetRecord br : budgetRecords) {
