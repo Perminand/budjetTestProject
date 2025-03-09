@@ -10,7 +10,7 @@
         <version>3.4.2</version>
     </parent>
 
-    <groupId>ru.perminov.budget</groupId>
+    <groupId>ru.perminov.budgetRecord</groupId>
     <artifactId>budgetTestProject</artifactId>
     <version>1.0-SNAPSHOT</version>
 

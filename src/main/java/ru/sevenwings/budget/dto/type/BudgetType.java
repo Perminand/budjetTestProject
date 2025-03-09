@@ -13,4 +13,12 @@ public enum BudgetType {
         this.description = description;
     }
 
+    public static BudgetType fromDescription(String description) {
+        for (BudgetType type : values()) {
+            if (type.getDescription().equals(description)) {
+                return type;
+            }
+        }
+        return null;
+    }
 }

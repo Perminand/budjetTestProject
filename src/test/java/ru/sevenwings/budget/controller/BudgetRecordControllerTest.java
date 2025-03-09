@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import ru.sevenwings.budget.dto.BudgetDto;
+import ru.sevenwings.budget.dto.BudgetRecordDto;
 import ru.sevenwings.budget.dto.type.BudgetType;
 import ru.sevenwings.budget.mapper.BudgetMapper;
 import ru.sevenwings.budget.repository.BudgetRepository;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-class BudgetControllerTest {
+class BudgetRecordControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -49,7 +49,7 @@ class BudgetControllerTest {
 
     @Test
     void testCreateBudget_success() throws Exception {
-        BudgetDto validDto = BudgetDto.builder()
+        BudgetRecordDto validDto = BudgetRecordDto.builder()
                 .year(2025)
                 .mount(3)
                 .amount(1000)
@@ -67,7 +67,7 @@ class BudgetControllerTest {
                 .andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
-        BudgetDto responseDto = objectMapper.readValue(responseContent, BudgetDto.class);
+        BudgetRecordDto responseDto = objectMapper.readValue(responseContent, BudgetRecordDto.class);
 
         assertNotNull(responseDto.id());
         assertEquals(validDto.year(), responseDto.year());
@@ -78,7 +78,7 @@ class BudgetControllerTest {
 
     @Test
     void testCreateBudget_invalidYear() throws Exception {
-        BudgetDto invalidYearDto = BudgetDto.builder()
+        BudgetRecordDto invalidYearDto = BudgetRecordDto.builder()
                 .year(0)
                 .mount(3)
                 .amount(1000)
@@ -97,7 +97,7 @@ class BudgetControllerTest {
 
     @Test
     void testCreateBudget_invalidMount() throws Exception {
-        BudgetDto invalidMountDto = BudgetDto.builder()
+        BudgetRecordDto invalidMountDto = BudgetRecordDto.builder()
                 .year(2025)
                 .mount(0)
                 .amount(1000)
@@ -116,7 +116,7 @@ class BudgetControllerTest {
 
     @Test
     void testCreateBudget_invalidAmount() throws Exception {
-        BudgetDto invalidAmountDto = BudgetDto.builder()
+        BudgetRecordDto invalidAmountDto = BudgetRecordDto.builder()
                 .year(2025)
                 .mount(3)
                 .amount(0)
@@ -135,7 +135,7 @@ class BudgetControllerTest {
 
     @Test
     void testCreateBudget_missingFields() throws Exception {
-        BudgetDto missingFieldsDto = BudgetDto.builder()
+        BudgetRecordDto missingFieldsDto = BudgetRecordDto.builder()
                 .year(2025)
                 .mount(3)
                 .build();
@@ -154,7 +154,7 @@ class BudgetControllerTest {
     void testGetBudget_success() throws Exception {
         budgetRepository.deleteAll();
 
-        List<BudgetDto> testData = generateBudgetData(2025, 20);
+        List<BudgetRecordDto> testData = generateBudgetData(2025, 20);
         testData.forEach(budgetDto -> budgetRepository.save(budgetMapper.toEntity(budgetDto)));
 
 
@@ -168,7 +168,7 @@ class BudgetControllerTest {
                 .andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
-        List<BudgetDto> responseDtos = objectMapper.readValue(responseContent, new TypeReference<List<BudgetDto>>() {
+        List<BudgetRecordDto> responseDtos = objectMapper.readValue(responseContent, new TypeReference<List<BudgetRecordDto>>() {
         });
 
         assertNotNull(responseDtos);
@@ -205,7 +205,7 @@ class BudgetControllerTest {
                 .andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
-        List<BudgetDto> responseDtos = objectMapper.readValue(responseContent, new TypeReference<List<BudgetDto>>() {
+        List<BudgetRecordDto> responseDtos = objectMapper.readValue(responseContent, new TypeReference<List<BudgetRecordDto>>() {
         });
 
         assertNotNull(responseDtos);
@@ -225,15 +225,15 @@ class BudgetControllerTest {
                 .andReturn();
 
         String responseContent = result.getResponse().getContentAsString();
-        List<BudgetDto> responseDtos = objectMapper.readValue(responseContent, new TypeReference<List<BudgetDto>>() {
+        List<BudgetRecordDto> responseDtos = objectMapper.readValue(responseContent, new TypeReference<List<BudgetRecordDto>>() {
         });
 
         assertNotNull(responseDtos);
         assertTrue(responseDtos.isEmpty());
     }
 
-    private List<BudgetDto> generateBudgetData(int year, int count) {
-        List<BudgetDto> budgetData = new ArrayList<>();
+    private List<BudgetRecordDto> generateBudgetData(int year, int count) {
+        List<BudgetRecordDto> budgetData = new ArrayList<>();
         Random random = new Random();
 
         for (int i = 0; i < count; i++) {
@@ -241,14 +241,14 @@ class BudgetControllerTest {
             int amount = random.nextInt(1000) + 1;
             BudgetType budgetType = random.nextBoolean() ? BudgetType.debit : BudgetType.debit;
 
-            BudgetDto budgetDto = BudgetDto.builder()
+            BudgetRecordDto budgetRecordDto = BudgetRecordDto.builder()
                     .year(year)
                     .mount(month)
                     .amount(amount)
                     .budgetType(budgetType)
                     .build();
 
-            budgetData.add(budgetDto);
+            budgetData.add(budgetRecordDto);
         }
 
         return budgetData;

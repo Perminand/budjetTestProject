@@ -1,12 +1,11 @@
 package ru.sevenwings.budget.service;
 
-import ru.sevenwings.budget.dto.BudgetDto;
+import ru.sevenwings.budget.dto.BudgetDtoOut;
+import ru.sevenwings.budget.dto.BudgetRecordDto;
 import ru.sevenwings.budget.dto.request.BudgetParamForGetDto;
 
-import java.util.List;
-
 public interface BudgetService {
-    BudgetDto create(BudgetDto budgetDto);
+    BudgetRecordDto create(BudgetRecordDto budgetRecordDto, Long authorId);
 
-    List<BudgetDto> getBudget(BudgetParamForGetDto build);
+    BudgetDtoOut getBudget(BudgetParamForGetDto build);
 }

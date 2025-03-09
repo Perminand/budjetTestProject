@@ -1,13 +1,17 @@
 package ru.sevenwings.budget.mapper;
 
 import org.mapstruct.Mapper;
-import ru.sevenwings.budget.dto.BudgetDto;
-import ru.sevenwings.budget.model.Budget;
+import org.mapstruct.Mapping;
+import ru.sevenwings.budget.dto.BudgetRecordDto;
+import ru.sevenwings.budget.dto.type.BudgetType;
+import ru.sevenwings.budget.model.BudgetRecord;
 
 @Mapper(componentModel = "spring")
 public interface BudgetMapper {
 
-    Budget toEntity(BudgetDto budgetDto);
+    @Mapping(target = "budgetType", source = "budgetType")
+    BudgetRecord toEntity(BudgetRecordDto budgetRecordDto, BudgetType budgetType);
 
-    BudgetDto toDto(Budget budget);
+    @Mapping(target = "budgetType", source = "budgetRecord.budgetType.description")
+    BudgetRecordDto toDto(BudgetRecord budgetRecord);
 }

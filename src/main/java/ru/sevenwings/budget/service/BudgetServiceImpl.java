@@ -1,5 +1,6 @@
 package ru.sevenwings.budget.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -8,13 +9,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.sevenwings.budget.dto.BudgetDto;
+import ru.sevenwings.budget.dto.BudgetDtoOut;
+import ru.sevenwings.budget.dto.BudgetRecordDto;
 import ru.sevenwings.budget.dto.request.BudgetParamForGetDto;
+import ru.sevenwings.budget.dto.type.BudgetType;
 import ru.sevenwings.budget.mapper.BudgetMapper;
-import ru.sevenwings.budget.model.Budget;
+import ru.sevenwings.budget.model.BudgetRecord;
+import ru.sevenwings.budget.repository.AuthorRepository;
 import ru.sevenwings.budget.repository.BudgetRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -24,23 +30,45 @@ public class BudgetServiceImpl implements BudgetService {
 
     private final BudgetRepository budgetRepository;
 
+    private final AuthorRepository authorRepository;
+
     private final BudgetMapper budgetMapper;
 
     @Override
-    public BudgetDto create(BudgetDto budgetDto) {
-        Budget budget = budgetMapper.toEntity(budgetDto);
-        budget = budgetRepository.save(budget);
-        log.info("Создан budget {}", budget);
-        return budgetMapper.toDto(budget);
+    public BudgetRecordDto create(BudgetRecordDto budgetRecordDto, Long authorId) {
+        BudgetType budgetType = BudgetType.fromDescription(budgetRecordDto.budgetType());
+
+        if (budgetType == null) {
+            throw new IllegalArgumentException("Неизвестный тип бюджета: " + budgetRecordDto.budgetType());
+        }
+
+        BudgetRecord budgetRecord = budgetMapper.toEntity(budgetRecordDto, budgetType);
+        if (authorId != null) {
+            budgetRecord.setAuthor(authorRepository.findById(authorId).orElseThrow(() -> new EntityNotFoundException("author не найден id = " + authorId)));
+        }
+        budgetRecord = budgetRepository.save(budgetRecord);
+        log.info("Создан budget {}", budgetRecord);
+        return budgetMapper.toDto(budgetRecord);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<BudgetDto> getBudget(BudgetParamForGetDto build) {
+    public BudgetDtoOut getBudget(BudgetParamForGetDto build) {
         Pageable pageable = PageRequest.of(build.offset(), build.limit(), Sort.by("mount"));
-        List<Budget> budgets = budgetRepository.findAllByYear(build.year(), pageable);
-        List<BudgetDto> budgetDtos = budgets.stream().map(budgetMapper::toDto).toList();
-        log.info("Вывод листа BudgetDto {}", budgetDtos);
-        return budgetDtos;
+        List<BudgetRecord> budgetRecords = budgetRepository.findAllByYear(build.year(), pageable);
+        int total = 0;
+        Map<String, Integer> totalByType = new HashMap<>();
+        for (BudgetRecord br : budgetRecords) {
+            total += br.getAmount();
+            String description = br.getBudgetType().getDescription();
+            if (!totalByType.containsKey(description)) {
+                totalByType.put(description, br.getAmount());
+            } else {
+                totalByType.replace(description, totalByType.get(description) + br.getAmount());
+            }
+        }
+        List<BudgetRecordDto> budgetRecordDtos = budgetRecords.stream().map(budgetMapper::toDto).toList();
+        log.info("Вывод листа BudgetDto {}", budgetRecordDtos);
+        return BudgetDtoOut.builder().total(total).totalByType(totalByType).items(budgetRecordDtos).build();
     }
 }
